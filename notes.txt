@@ -108,6 +108,56 @@ Let's suppose we keep on adding features inside this codebase and now we want tw
       --The isolate_namespace method is responsible for isolating the controllers, models, routes, and other things into their own namespace, away from similar components inside the application.
        ensuring no engine's components could "leak" into the application, causing unwanted disruption, 
       or that important engine components could be overridden by similarly named things within the application.
-3. 
+
+
+3. Mounting  engine with the main rails app 
     
+
+`gem 'blog_engine', path: 'engines/blog_engine'`  inside GemFile  
+    - it will create path for the engine inside rails app 
+
+bundle install 
+
+
+4. generating a model inside engine 
+` bin/rails generate model ` -- will generate a model inside engine app along with other dependencies 
+
+5. Adding a model inside model and related controller
+`bin/rails generate scaffold article title:string text:text` -- 
+-- will generate a model  and migration named Article by invoking active_record 
+---  migration is called `create_blorgh_article`s rather than the usual `create_articles`. 
+-- This is due to the isolate_namespace method called in the Blog::Engine class's definition. 
+
+6. A route is created inside app/config.eb with `resource: article'
+7. All the scaffold generated are neatly separated by isolate_namespace method
+
+8. Make rails engine up and running
+ -- perform migration : bin/rails db:migrate
+ -- run server: rails s 
+ -- visit site: http://127.0.0.1:3000/blog_engine/articles --> it will generate scaffolded article model
+  -- console access:
+    - rails c 
+9. Change route for landing page 
+`  root to: "articles#index"` will change http://127.0.0.1:3000/blog_engine/article to http://127.0.0.1:3000/blog_engine
+
+10. Activerecord relation
+  10.1 Creating a new comment scaffold inside the engine
+       - rails generate model Comment article_id:integer text:text
+       - rails db:migrate 
+       -- create a route for comments to get render from article
+       -- create a view for the comments 
+       -- create controller for the comments `rails generate controller comments` 
+          -- will have CRUD methods 
+
+
+
+Hooking the engine  into main applications
+
+
+
+
+
+
+
+
 
