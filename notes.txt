@@ -1,0 +1,113 @@
+
+
+
+## Create an engine 
+
+
+
+--mountable ==> rails plugin new generator is used to generate engine scaffolds.
+
+--full ---> all the models, controllers, helpers, and routes are available to the host application
+--mountable --> all the models, controllers, helpers, and routes are not available to the host application by DEFAULT
+
+thus using `--mountable` we are isolating engine functionality from the host application
+
+
+
+
+The app model we love 
+
+└── FleetPanda App/
+    └── app/
+        ├── models/
+        │   └── application_record.rb
+        ├── controllers/
+        │   └── application_controller.rb
+        ├── jobs/
+        │   └── application_job.rb
+        ├── mailers/
+        │   └── application_mailer.rb
+        ├── views/
+        │   └── layouts/
+        │       └── application.html.erb
+        └── [...]
+
+
+Let's suppose we keep on adding features inside this codebase and now we want two more features so the codebase looks something like this 
+
+.
+└── FleetPanda App/
+    └── app/
+
+        ├── controllers/
+        │   ├── application_controller.rb
+        │   ├── authentication/
+        │   │   └── session_controller.rb
+        │   ├── orders/
+        │   │   └── [...]
+        │   ├── assets /
+        │   │   └── [...]
+        │   ├── portal/
+        │   │   └── [...]
+        │   ├── customer/
+        │   │   └── [...]
+        │   ├── new_feature_1/
+        │   │   └── [...]
+        │   └── new_feature_2/
+        │       └── [...]
+        ├── jobs/
+        │   ├── application_job.rb
+        │   └── [...]
+        ├── mailers/
+        │   ├── application_mailer.rb
+        │   └── [...]
+        ├── views/
+        │   └── layouts/
+        │       ├── application.html.erb
+        │       └── [...]
+        └── [...]
+
+
+
+        .
+├── FleetPanda App/
+│   ├── app/
+│   │   └── [...]
+│   ├── bin/
+│   │   └── [...]
+│   ├── new_feature_1_engine/
+│   │   └── [...]
+│   └── new_feature_2_engine/
+│       └── [...]
+└── [...]
+
+
+
+
+
+
+#### Steps to Buiild a rails engine for the host application 
+1. `rails plugin new blog --mountable` instead of --full
+    --mountable : using it all the models, controllers, helpers, and routes are `not available` to the host application by DEFAULT and we segregate the engine here 
+
+    `    1.1. the command creates rails engine inside host application 
+          -engine
+            - app
+              - model 
+              - view 
+              - controller
+              - jobs
+              - mailers 
+            - lib
+            - config
+            - test 
+`
+
+2. Inside lib/engine_name/engine.rb
+   -- explain why isolate_namespace is used 
+      --The isolate_namespace method is responsible for isolating the controllers, models, routes, and other things into their own namespace, away from similar components inside the application.
+       ensuring no engine's components could "leak" into the application, causing unwanted disruption, 
+      or that important engine components could be overridden by similarly named things within the application.
+3. 
+    
+
